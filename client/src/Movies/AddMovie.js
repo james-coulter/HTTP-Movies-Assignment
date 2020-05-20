@@ -13,6 +13,7 @@ const AddMovie = ({ getMovieList }) => {
         title: "",
         director: "",
         metascore: Number(""),
+        // star: '',
         stars: []
     });
 
@@ -24,6 +25,12 @@ const AddMovie = ({ getMovieList }) => {
         })
         console.log(newMovie)
     };
+
+    // const handleNewStars = () => {
+    //     const stars = this.state;
+    //    this.state.stars.push(this.state.actor)
+    //    setNewMovie({star: '', stars})
+    // }
 
 
     const handleNewMovie = (movie) => {
@@ -70,6 +77,8 @@ const AddMovie = ({ getMovieList }) => {
                     Stars: <input type="text" value={newMovie.stars} name="stars" onChange={handleChange} />
                 </label>
                 <button>Add Movie</button>
+                {/* <button onClick={handleNewStars}>Add New Star</button> */}
+                {/* {newMovie.stars.map(star => <div>{star}</div>)} */}
             </form>
         </div>
     )
