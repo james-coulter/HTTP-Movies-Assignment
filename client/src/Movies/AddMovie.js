@@ -7,58 +7,65 @@ const AddMovie = ({ getMovieList }) => {
 
     const history = useHistory()
 
-    // const [initState, setInitState] = useState('')
-    const [newMovie, setNewMovie] = useState({
+    const initMovie = {
         id: "",
         title: "",
         director: "",
         metascore: Number(""),
-        // star: '',
         stars: []
-    });
+    }
+
+    const [newMovie, setNewMovie] = useState(initMovie);
+
+    const [newStar, setNewStar] = useState([]);
 
     const handleChange = e => {
+        e.persist();
         setNewMovie({
             ...newMovie,
             [e.target.name]: e.target.value
 
         })
-        console.log(newMovie)
+        // console.log(newMovie)
     };
 
-    // const handleNewStars = () => {
-    //     const stars = this.state;
-    //    this.state.stars.push(this.state.actor)
-    //    setNewMovie({star: '', stars})
-    // }
-
-
-    const handleNewMovie = (movie) => {
-        axios.post("http://localhost:5000/api/movies", movie)
-            .then( res => {
-                console.log(res)
-                history.push('/')
-                getMovieList()
-            })
-            .catch(err => console.log(err))
+    const handleNewStars = e => {
+        setNewStar(e.target.value)
     }
+
+    const addStar = e => {
+        setNewMovie({
+            ...newMovie,
+            stars: [...newMovie.stars, newStar]
+        })
+        setNewStar('')
+    }
+
+
+    // const handleNewMovie = (movie) => {
+    //     axios.post("http://localhost:5000/api/movies", movie)
+    //         .then( res => {
+    //             console.log(res)
+    //             history.push('/')
+    //             getMovieList()
+    //         })
+    //         .catch(err => console.log(err))
+    // }
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-
-        const movieUpdate = {
-            id: Date.now(),
-           title: newMovie.title,
-           director: newMovie.director,
-           metascore: Number(newMovie.metascore),
-           stars: [newMovie.stars]
-        }
-
-
-      console.log("updated movie", movieUpdate)
-        handleNewMovie(movieUpdate);
+        axios
+          .post(`http://localhost:5000/api/movies`, newMovie)
+          .then(res => {
+            console.log('POST request for adding a movie', res);
+            getMovieList();
+            history.push(`/`);
+          })
+          .catch(err => console.log(err));
+    
+        setNewMovie(initMovie)
     }
 
     return (
@@ -74,12 +81,12 @@ const AddMovie = ({ getMovieList }) => {
                    Metascore: <input type="number" value={newMovie.metascore} name="metascore" onChange={handleChange} />
                 </label>
                 <label>
-                    Stars: <input type="text" value={newMovie.stars} name="stars" onChange={handleChange} />
+                    Stars: <input type="text" value={newStar} name="stars" onChange={handleNewStars} />
                 </label>
                 <button>Add Movie</button>
-                {/* <button onClick={handleNewStars}>Add New Star</button> */}
-                {/* {newMovie.stars.map(star => <div>{star}</div>)} */}
             </form>
+            <button onClick={addStar}>Add New Star</button>
+            {newStar.initMovie.map(star => <div>{star}</div>)}
         </div>
     )
 }
