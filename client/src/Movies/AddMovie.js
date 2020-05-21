@@ -86,7 +86,7 @@ const AddMovie = ({ getMovieList }) => {
                 <button>Add Movie</button>
             </form>
             <button onClick={addStar}>Add New Star</button>
-            {newStar.initMovie.map(star => <div>{star}</div>)}
+            {/* {newStar.initMovie.map(star => <div>{star}</div>)} */}
         </div>
     )
 }
